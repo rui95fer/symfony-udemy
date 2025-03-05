@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Micro Posts | Show{% endblock %}
+
+{% block body %}
+    <div class="max-w-3xl mx-auto py-10">
+        <div class="bg-white shadow-lg rounded-2xl p-6">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ post.title }}</h1>
+            <p class="text-gray-700 text-lg leading-relaxed">{{ post.text }}</p>
+            <small class="text-gray-500 block mt-4">
+                Posted on {{ post.created|date('d-m-Y H:i:s') }}
+            </small>
+        </div>
+
+        <div class="mt-6 flex space-x-4">
+            <a href="{{ path('micro_post_index') }}"
+               class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                Back to Posts
+            </a>
+            <a href="#"
+               class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                Edit Post
+            </a>
+            <form action="#" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit"
+                        class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                        onclick="return confirm('Are you sure you want to delete this post?')">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

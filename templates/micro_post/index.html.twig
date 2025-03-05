@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Micro Posts | Index{% endblock %}
+
+{% block body %}
+    <div class="max-w-4xl mx-auto py-10">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Micro Posts</h1>
+
+        <hr class="mb-6 border-gray-300">
+
+        {% for post in posts %}
+            <div class="bg-white shadow-lg rounded-2xl p-6 mb-6 transition-transform transform hover:scale-105">
+                <h2 class="text-xl font-semibold text-gray-900">
+                    <a href="{{ path('micro_post_show', { id: post.id }) }}" class="hover:underline text-blue-600">
+                        {{ post.title }}
+                    </a>
+                </h2>
+                <p class="text-gray-600 mt-2">
+                    {{ post.text|length > 100 ? post.text|slice(0, 100) ~ '...' : post.text }}
+                </p>
+                <small class="text-gray-500 block mt-3">
+                    Posted on {{ post.created|date('d-m-Y H:i:s') }}
+                </small>
+            </div>
+        {% else %}
+            <p class="text-gray-600 text-center text-lg">No posts available.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
