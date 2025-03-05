@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Hello | Index
+{% endblock %}
+
+{% block body %}
+    <div>
+        {% for user in users|sort((a, b) => a.name <=> b.name) %}
+            <div>
+                <a href="{{ path('user.show', {'id': user.id}) }}">
+                    <b>{{ user.name }}</b>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+

@@ -3,9 +3,9 @@ import { Controller } from '@hotwired/stimulus';
 /*
  * This is an example Stimulus controller!
  *
- * Any element with a data-controller="hello" attribute will cause
- * this controller to be executed. The name "hello" comes from the filename:
- * hello_controller.js -> "hello"
+ * Any element with a data-controller="user" attribute will cause
+ * this controller to be executed. The name "user" comes from the filename:
+ * hello_controller.js -> "user"
  *
  * Delete this file or adapt it for your use!
  */

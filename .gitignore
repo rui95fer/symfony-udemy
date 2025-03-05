@@ -1,17 +1,20 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+# Ignore cache & logs
+/var/cache/
+/var/log/
 /var/
+# Ignore dependencies
 /vendor/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
-/phpunit.xml
 .phpunit.result.cache
+/phpunit.xml
 ###< phpunit/phpunit ###
 
 ###> symfony/phpunit-bridge ###
@@ -23,3 +26,27 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###> phpstan/phpstan ###
+phpstan.neon
+phpstan.dist.neon
+###< phpstan/phpstan ###
+
+###> Additional Exclusions ###
+# Ignore IDE & editor files
+.idea/
+.vscode/
+
+# Ignore PHP CS Fixer cache
+.php-cs-fixer.cache
+
+# Ignore Node.js dependencies (if applicable)
+node_modules/
+public/build/
+
+# Ignore Composer lock file (optional, but sometimes committed)
+/composer.lock
+
+# Ignore Symfony lock file (optional, but sometimes committed)
+/symfony.lock
+###< Additional Exclusions ###
