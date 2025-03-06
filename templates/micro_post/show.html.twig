@@ -3,6 +3,8 @@
 {% block title %}Micro Posts | Show{% endblock %}
 
 {% block body %}
+    {{ parent() }}
+
     <div class="max-w-3xl mx-auto py-10">
         <div class="bg-white shadow-lg rounded-2xl p-6">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ post.title }}</h1>
@@ -17,11 +19,11 @@
                class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
                 Back to Posts
             </a>
-            <a href="#"
+            <a href=" {{ path('micro_post_edit', {'id': post.id}) }}"
                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                 Edit Post
             </a>
-            <form action="#" method="post">
+            <form action="{{ path('micro_post_delete', {'id': post.id}) }}" method="post">
                 <input type="hidden" name="_method" value="DELETE">
                 <button type="submit"
                         class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"

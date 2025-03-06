@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Micro Post{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div class="max-w-lg mx-auto py-10">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">Edit Micro Post</h1>
+
+        <div class="bg-white shadow-lg rounded-2xl p-6">
+            {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+
+            <div>
+                {{ form_label(form.title, 'Title', {'label_attr': {'class': 'block text-gray-700 font-medium'}}) }}
+                {{ form_widget(form.title, {'attr': {'class': 'w-full p-3 border rounded-lg focus:ring focus:ring-blue-300'}}) }}
+                {{ form_errors(form.title, {'attr': {'class': 'text-red-500'}}) }}
+            </div>
+
+            <div>
+                {{ form_label(form.text, 'Content', {'label_attr': {'class': 'block text-gray-700 font-medium'}}) }}
+                {{ form_widget(form.text, {'attr': {'class': 'w-full p-3 border rounded-lg focus:ring focus:ring-blue-300'}}) }}
+                {{ form_errors(form.text, {'attr': {'class': 'text-red-500'}}) }}
+            </div>
+
+            <div class="flex space-x-4 mt-4">
+                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                    Update Post
+                </button>
+                <a href="{{ path('micro_post_index') }}"
+                   class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    Cancel
+                </a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
