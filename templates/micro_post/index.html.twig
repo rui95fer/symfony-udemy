@@ -28,6 +28,9 @@
                 </p>
                 <small class="text-gray-500 block mt-3">
                     Posted on {{ post.created|date('d-m-Y H:i:s') }}
+                    by <span class="font-semibold text-gray-800">
+                        {{ post.user ? post.user.email : 'Unknown' }}
+                    </span>
                 </small>
             </div>
         {% else %}

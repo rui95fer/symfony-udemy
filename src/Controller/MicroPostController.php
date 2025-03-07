@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\MicroPost;
+use App\Entity\User;
 use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
 use App\Service\BreadcrumbService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,19 +58,26 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/create', name: 'micro_post_create')]
-    public function create(Request $request): Response
+    public function create(Request $request, Security $security): Response
     {
         $this->breadcrumbService->clear();
         $this->breadcrumbService->add('Micro Posts', $this->generateUrl('micro_post_index'));
         $this->breadcrumbService->add('Create Post', $this->generateUrl('micro_post_create'));
 
         $post = new MicroPost();
-
         $form = $this->createForm(MicroPostType::class, $post);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $security->getUser();
+
+            if ($user instanceof User) {
+                $post->setUser($user);
+            } else {
+                $this->addFlash('error', 'You need to be logged in to create a post.');
+                return $this->redirectToRoute('app_login');
+            }
+
             $this->entityManager->persist($post);
             $this->entityManager->flush();
 

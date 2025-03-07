@@ -29,6 +29,10 @@ class MicroPost
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $created;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'microPosts')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->created = new DateTimeImmutable();
@@ -71,6 +75,18 @@ class MicroPost
     public function setCreated(DateTimeInterface $created): static
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

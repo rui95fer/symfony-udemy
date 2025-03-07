@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="max-w-lg mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
+        <h1 class="text-3xl font-semibold text-center text-gray-800 mb-6">Create Your Account</h1>
+
+        {{ form_start(registrationForm) }}
+        <div class="mb-4">
+            {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'text-gray-700 font-medium'}}) }}
+            {{ form_widget(registrationForm.email, {'attr': {'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'}}) }}
+            {{ form_errors(registrationForm.email, {'attr': {'class': 'text-red-500 mt-1'}}) }}
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'text-gray-700 font-medium'}}) }}
+            {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'}}) }}
+            {{ form_errors(registrationForm.plainPassword, {'attr': {'class': 'text-red-500 mt-1'}}) }}
+        </div>
+
+        <div class="mb-4 flex items-center">
+            {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'h-5 w-5 text-blue-500'}}) }}
+            <label for="agreeTerms" class="ml-2 text-gray-700">I agree to the terms and conditions</label>
+            {{ form_errors(registrationForm.agreeTerms, {'attr': {'class': 'text-red-500 mt-1'}}) }}
+        </div>
+
+        <div class="mt-6">
+            <button type="submit"
+                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Register
+            </button>
+        </div>
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}

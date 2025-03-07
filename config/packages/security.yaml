@@ -23,6 +23,19 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
+            # Enable form login
+            form_login:
+                login_path: app_login     # The route for the login form (it must match the login page route)
+                check_path: app_login     # The route where Symfony will process the form submission
+                default_target_path: micro_post_index # Where the user is redirected after successful login
+                username_parameter: _username   # Form field name for the username
+                password_parameter: _password   # Form field name for the password
+
+            # Enable logout
+            logout:
+                path: app_logout
+                target: micro_post_index  # Optional, where to redirect after logout
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:

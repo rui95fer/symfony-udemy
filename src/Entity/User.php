@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -31,8 +32,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?UserProfile $userProfile = null;
+    #[ORM\OneToMany(targetEntity: MicroPost::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private Collection $microPosts;
 
     public function getId(): ?int
     {
@@ -58,13 +59,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
+     * @return list<string>
      * @see UserInterface
      *
-     * @return list<string>
      */
     public function getRoles(): array
     {
@@ -109,19 +110,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getUserProfile(): ?UserProfile
+    public function getMicroPosts(): Collection
     {
-        return $this->userProfile;
+        return $this->microPosts;
     }
 
-    public function setUserProfile(UserProfile $userProfile): static
+    public function addMicroPost(MicroPost $microPost): static
     {
-        // set the owning side of the relation if necessary
-        if ($userProfile->getUser() !== $this) {
-            $userProfile->setUser($this);
+        if (!$this->microPosts->contains($microPost)) {
+            $this->microPosts->add($microPost);
+            $microPost->setUser($this);
         }
 
-        $this->userProfile = $userProfile;
+        return $this;
+    }
+
+    public function removeMicroPost(MicroPost $microPost): static
+    {
+        if ($this->microPosts->removeElement($microPost)) {
+            if ($microPost->getUser() === $this) {
+                $microPost->setUser(null);
+            }
+        }
 
         return $this;
     }
