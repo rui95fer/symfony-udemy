@@ -23,18 +23,44 @@
                class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
                 Back to Posts
             </a>
-            <a href=" {{ path('micro_post_edit', {'id': post.id}) }}"
-               class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-                Edit Post
-            </a>
-            <form action="{{ path('micro_post_delete', {'id': post.id}) }}" method="post">
-                <input type="hidden" name="_method" value="DELETE">
-                <button type="submit"
-                        class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
-                        onclick="return confirm('Are you sure you want to delete this post?')">
-                    Delete
-                </button>
-            </form>
+
+            {% if is_granted('MICROPOST_EDIT', post) %}
+                <a href="{{ path('micro_post_edit', {'id': post.id}) }}"
+                   class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                    Edit Post
+                </a>
+            {% endif %}
+
+            {% if is_granted('MICROPOST_DELETE', post) %}
+                <form action="{{ path('micro_post_delete', {'id': post.id}) }}" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit"
+                            class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                            onclick="return confirm('Are you sure you want to delete this post?')">
+                        Delete
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+
+        <!-- Like Section -->
+        <div class="mt-6 flex items-center space-x-4">
+            {% if app.user %}
+                <form action="{{ path('micro_post_like', { id: post.id }) }}" method="post">
+                    <button type="submit"
+                            class="flex items-center text-sm font-medium {% if post.isLikedByUser(app.user) %} text-red-600 {% else %} text-gray-600 {% endif %} hover:text-red-500 transition">
+                        {% if post.isLikedByUser(app.user) %}
+                            ❤️ Unlike
+                        {% else %}
+                            🤍 Like
+                        {% endif %}
+                    </button>
+                </form>
+            {% else %}
+                <span class="text-gray-400 text-sm">Login to like</span>
+            {% endif %}
+
+            <span class="text-gray-600 text-sm">{{ post.getLikesCount() }} Likes</span>
         </div>
     </div>
 {% endblock %}

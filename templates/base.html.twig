@@ -16,14 +16,14 @@
 <body>
 {% block body %}
     <nav class="bg-gray-100 py-4 mb-4">
-        <div class="container mx-auto">
+        <div class="container mx-auto flex justify-between items-center">
+
             <ol class="list-reset flex text-sm text-gray-700">
                 {% for breadcrumb in breadcrumbs %}
                     <li>
                         {% if breadcrumb.url %}
                             <a href="{{ breadcrumb.url }}"
                                class="text-blue-600 hover:text-blue-800">{{ breadcrumb.title }}</a>
-
                         {% else %}
                             <span class="text-gray-500">{{ breadcrumb.title }}</span>
                         {% endif %}
@@ -33,8 +33,19 @@
                     </li>
                 {% endfor %}
             </ol>
+
+            <div>
+                {% if app.user %}
+                    <span class="text-gray-700">Welcome, {{ app.user.email }}</span>
+                    <a href="{{ path('app_logout') }}" class="ml-4 text-red-600 hover:text-red-800">Logout</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="text-blue-600 hover:text-blue-800">Login</a>
+                    <a href="{{ path('app_register') }}" class="ml-4 text-blue-600 hover:text-blue-800">Register</a>
+                {% endif %}
+            </div>
         </div>
     </nav>
+
 
     {% for label, messages in app.flashes %}
         {% for message in messages %}

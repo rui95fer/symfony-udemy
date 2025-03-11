@@ -8,10 +8,13 @@
     <div class="max-w-4xl mx-auto py-10">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-800">Micro Posts</h1>
-            <a href="{{ path('micro_post_create') }}"
-               class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition">
-                + Create New Post
-            </a>
+
+            {% if is_granted('MICROPOST_CREATE') %}
+                <a href="{{ path('micro_post_create') }}"
+                   class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition">
+                    + Create New Post
+                </a>
+            {% endif %}
         </div>
 
         <hr class="mb-6 border-gray-300">
@@ -32,6 +35,26 @@
                         {{ post.user ? post.user.email : 'Unknown' }}
                     </span>
                 </small>
+
+                <!-- Like Section -->
+                <div class="mt-4 flex items-center space-x-2">
+                    {% if app.user %}
+                        <form action="{{ path('micro_post_like', { id: post.id }) }}" method="post">
+                            <button type="submit"
+                                    class="flex items-center text-sm font-medium {% if post.isLikedByUser(app.user) %} text-red-600 {% else %} text-gray-600 {% endif %} hover:text-red-500 transition">
+                                {% if post.isLikedByUser(app.user) %}
+                                    ❤️ Unlike
+                                {% else %}
+                                    🤍 Like
+                                {% endif %}
+                            </button>
+                        </form>
+                    {% else %}
+                        <span class="text-gray-400 text-sm">Login to like</span>
+                    {% endif %}
+
+                    <span class="text-gray-600 text-sm">{{ post.getLikesCount() }} Likes</span>
+                </div>
             </div>
         {% else %}
             <p class="text-gray-600 text-center text-lg">No posts available.</p>

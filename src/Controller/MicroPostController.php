@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/micro-posts')]
 class MicroPostController extends AbstractController
@@ -58,6 +59,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/create', name: 'micro_post_create')]
+    #[IsGranted('MICROPOST_CREATE')]
     public function create(Request $request, Security $security): Response
     {
         $this->breadcrumbService->clear();
@@ -91,6 +93,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/{id<\d+>}/edit', name: 'micro_post_edit')]
+    #[IsGranted('MICROPOST_EDIT', 'post')]
     public function edit(Request $request, MicroPost $post): Response
     {
         $this->breadcrumbService->clear();
@@ -115,6 +118,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/{id<\d+>}/delete', name: 'micro_post_delete', methods: ['POST'])]
+    #[IsGranted('MICROPOST_DELETE', 'post')]
     public function delete(MicroPost $post): Response
     {
         $this->entityManager->remove($post);

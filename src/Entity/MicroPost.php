@@ -8,10 +8,18 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: MicroPostRepository::class)]
 class MicroPost
 {
+    public function __construct()
+    {
+        $this->created = new DateTimeImmutable();
+        $this->likes = new ArrayCollection();
+    }
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -33,10 +41,8 @@ class MicroPost
     #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?User $user = null;
 
-    public function __construct()
-    {
-        $this->created = new DateTimeImmutable();
-    }
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'microPost', cascade: ["remove"])]
+    private Collection $likes;
 
     public function getId(): ?int
     {
@@ -89,5 +95,25 @@ class MicroPost
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function getLikesCount(): int
+    {
+        return $this->likes->count();
+    }
+
+    public function isLikedByUser(User $user): bool
+    {
+        foreach ($this->likes as $like) {
+            if ($like->getUser() === $user) {
+                return true;
+            }
+        }
+        return false;
     }
 }
