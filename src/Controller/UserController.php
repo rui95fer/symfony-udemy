@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class UserController extends AbstractController
 {
-
     /**
      * @var array<int, array<string, mixed>>
      */
@@ -42,7 +41,7 @@ class UserController extends AbstractController
     #[Route('/users/{id<\d+>}', name: 'user.show')]
     public function show(int $id): Response
     {
-        $user = array_values(array_filter($this->users, fn($user) => $user['id'] === $id))[0] ?? null;
+        $user = array_values(array_filter($this->users, fn ($user) => $user['id'] === $id))[0] ?? null;
 
         if (empty($user)) {
             throw $this->createNotFoundException('User not found');

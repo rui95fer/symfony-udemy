@@ -28,8 +28,7 @@ class CreateUserCommand extends Command
         EntityManagerInterface      $entityManager,
         UserPasswordHasherInterface $passwordHasher,
         ValidatorInterface          $validator
-    )
-    {
+    ) {
         parent::__construct();
         $this->entityManager = $entityManager;
         $this->passwordHasher = $passwordHasher;
