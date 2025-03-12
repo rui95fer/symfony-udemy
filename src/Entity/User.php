@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\Collection;
@@ -34,6 +36,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(targetEntity: MicroPost::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     private Collection $microPosts;
+
+    #[ORM\OneToMany(targetEntity: UserFollow::class, mappedBy: 'follower', orphanRemoval: true)]
+    private Collection $following;
+
+    #[ORM\OneToMany(targetEntity: UserFollow::class, mappedBy: 'followed', orphanRemoval: true)]
+    private Collection $followers;
+
+    public function __construct()
+    {
+        $this->following = new ArrayCollection();
+        $this->followers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -134,5 +148,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function follow(User $userToFollow): void
+    {
+        if ($this === $userToFollow) {
+            throw new InvalidArgumentException('You cannot follow yourself.');
+        }
+
+        $follow = new UserFollow($this, $userToFollow);
+        $this->following[] = $follow;
+    }
+
+    public function unfollow(User $userToUnfollow): void
+    {
+        foreach ($this->following as $follow) {
+            if ($follow->getFollowed() === $userToUnfollow) {
+                $this->following->removeElement($follow);
+                break;
+            }
+        }
+    }
+
+    public function getFollowing(): Collection
+    {
+        return $this->following;
+    }
+
+    public function getFollowers(): Collection
+    {
+        return $this->followers;
+    }
+
+    public function isFollowing(User $user): bool
+    {
+        foreach ($this->following as $follow) {
+            if ($follow->getFollowed() === $user) {
+                return true;
+            }
+        }
+        return false;
     }
 }

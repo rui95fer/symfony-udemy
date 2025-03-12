@@ -34,6 +34,20 @@
                     by <span class="font-semibold text-gray-800">
                         {{ post.user ? post.user.email : 'Unknown' }}
                     </span>
+
+                    <!-- Follow Button -->
+                    {% if app.user and post.user and app.user.id != post.user.id %}
+                        <form action="{{ path('user_follow_toggle', { id: post.user.id }) }}" method="post" class="inline ml-2">
+                            <button type="submit"
+                                    class="text-sm font-medium {% if app.user.isFollowing(post.user) %} text-blue-600 {% else %} text-gray-600 {% endif %} hover:text-blue-500 transition">
+                                {% if app.user.isFollowing(post.user) %}
+                                    Unfollow
+                                {% else %}
+                                    Follow
+                                {% endif %}
+                            </button>
+                        </form>
+                    {% endif %}
                 </small>
 
                 <!-- Like Section -->

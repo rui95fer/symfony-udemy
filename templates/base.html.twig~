@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    {% block stylesheets %}
+    {% endblock %}
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <nav class="bg-gray-100 py-4 mb-4">
+        <div class="container mx-auto flex justify-between items-center">
+
+            <ol class="list-reset flex text-sm text-gray-700">
+                {% for breadcrumb in breadcrumbs %}
+                    <li>
+                        {% if breadcrumb.url %}
+                            <a href="{{ breadcrumb.url }}"
+                               class="text-blue-600 hover:text-blue-800">{{ breadcrumb.title }}</a>
+                        {% else %}
+                            <span class="text-gray-500">{{ breadcrumb.title }}</span>
+                        {% endif %}
+                        {% if not loop.last %}
+                            <span class="mx-2">/</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ol>
+
+            <div>
+                {% if app.user %}
+                    <span class="text-gray-700">Welcome, {{ app.user.email }}</span>
+                    <a href="{{ path('app_logout') }}" class="ml-4 text-red-600 hover:text-red-800">Logout</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="text-blue-600 hover:text-blue-800">Login</a>
+                    <a href="{{ path('app_register') }}" class="ml-4 text-blue-600 hover:text-blue-800">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
+</body>
+</html>

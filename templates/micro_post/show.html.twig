@@ -60,7 +60,13 @@
                 <span class="text-gray-400 text-sm">Login to like</span>
             {% endif %}
 
-            <span class="text-gray-600 text-sm">{{ post.getLikesCount() }} Likes</span>
+            <span class="text-gray-600 text-sm">
+                {% if post.getLikesCount == 1 %}
+                    {{ post.getLikesCount() }} Like
+                {% else %}
+                    {{ post.getLikesCount() }} Likes
+                {% endif %}
+            </span>
         </div>
     </div>
 {% endblock %}

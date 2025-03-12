@@ -1,0 +1,44 @@
+<nav class="bg-gray-100 py-4 mb-4">
+    <div class="container mx-auto">
+        <ol class="list-reset flex text-sm text-gray-700">
+            <li>
+                <a href="{{ path('app_home') }}" class="text-blue-600 hover:text-blue-800">Home</a>
+                <span class="mx-2">/</span>
+            </li>
+
+            {# Dynamic breadcrumbs based on the current route #}
+            {% set route_name = app.request.attributes.get('_route') %}
+            {% set route_params = app.request.attributes.get('_route_params') %}
+
+            {% if route_name == 'micro_post_index' %}
+                <li>
+                    <span class="text-gray-500">Micro Posts</span>
+                </li>
+            {% elseif route_name == 'micro_post_show' %}
+                <li>
+                    <a href="{{ path('micro_post_index') }}" class="text-blue-600 hover:text-blue-800">Micro Posts</a>
+                    <span class="mx-2">/</span>
+                </li>
+                <li>
+                    <span class="text-gray-500">Post Details</span>
+                </li>
+            {% elseif route_name == 'micro_post_create' %}
+                <li>
+                    <a href="{{ path('micro_post_index') }}" class="text-blue-600 hover:text-blue-800">Micro Posts</a>
+                    <span class="mx-2">/</span>
+                </li>
+                <li>
+                    <span class="text-gray-500">Create Post</span>
+                </li>
+            {% elseif route_name == 'micro_post_edit' %}
+                <li>
+                    <a href="{{ path('micro_post_index') }}" class="text-blue-600 hover:text-blue-800">Micro Posts</a>
+                    <span class="mx-2">/</span>
+                </li>
+                <li>
+                    <span class="text-gray-500">Edit Post</span>
+                </li>
+            {% endif %}
+        </ol>
+    </div>
+</nav>
